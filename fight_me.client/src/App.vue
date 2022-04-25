@@ -1,9 +1,10 @@
-<template>
+<template >
   <header>
     <Navbar />
   </header>
-  <main>
+  <main :class="{'theme--default': theme, 'theme--dark': !theme}">
     <router-view />
+    <button @click="theme = !theme"> change theme {{bodyBg}}</button>
   </main>
   <footer>
     <div class="bg-dark text-light text-center p-4">
@@ -13,18 +14,24 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { AppState } from './AppState'
 export default {
   name: 'App',
   setup() {
+    const theme = ref(true)
+    watchEffect(()=> document.body.style.backgroundColor = theme.value ? '#e9ecef':'#070725')
     return {
-      appState: computed(() => AppState)
+      theme,
+      appState: computed(() => AppState),
     }
   }
 }
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
+body{
+  transition: background-color .5s ease;
+}
 
 </style>
