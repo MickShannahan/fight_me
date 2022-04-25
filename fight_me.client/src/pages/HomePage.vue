@@ -2,9 +2,9 @@
   <div class=" home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
     <Border class="rounded  elevation-3">
       <div  class="bg-card home-card py-3">
-        <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo" class="rounded-circle">
+        <img src="../assets/img/3d/FM-soft.png" alt="fight me logo" class="rounded-circle">
         <h1 class="mt-5 mb-0 bg-dark text-white p-3 rounded text-center ">
-          Vue 3 Starter
+          Fight Me
         </h1>
       </div >
     </Border>
