@@ -11,14 +11,14 @@
 }
 
 .bg{
-  transition: background-color .5s ease;
   @include themed(){
     background-color: _('bg');
     &-card{
-    background-color: _('bg-card');
-      
-    }
+      background-color: _('bg-card');
+      transition: background-color .5s ease;
   }
+  }
+    transition: background-color .5s ease;
 }
 
 main {

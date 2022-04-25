@@ -1,16 +1,8 @@
 <template >
-  <header>
-    <Navbar />
-  </header>
   <main :class="{'theme--default': theme, 'theme--dark': !theme}">
     <router-view />
     <button @click="theme = !theme"> change theme {{bodyBg}}</button>
   </main>
-  <footer>
-    <div class="bg-dark text-light text-center p-4">
-      Made with 💖 by CodeWorks
-    </div>
-  </footer>
 </template>
 
 <script>
@@ -32,6 +24,10 @@ export default {
 @import "./assets/scss/main.scss";
 body{
   transition: background-color .5s ease;
+  background-image: url('./assets/img/backgrounds/Background grid.png');
+  background-size: 100vh;
+  background-repeat: no-repeat;
+  background-position: bottom right;
 }
 
 </style>
