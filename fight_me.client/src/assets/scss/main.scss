@@ -3,11 +3,20 @@
 @import "./_overrides.scss";
 @import "./utilities.scss";
 @import "./loaders.scss";
+@import "./mixins.scss";
 
 #app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.text{
+  @include themed(){
+    color: _('text');
+    transition: color .5s ease;
+
+  }
 }
 
 .bg{

@@ -1,7 +1,8 @@
 <template >
-  <main :class="{'theme--default': theme, 'theme--dark': !theme}">
+  <main :class="{'theme--default': theme, 'theme--dark': !theme}" class="d-flex">
+    <SideNav/>
     <router-view />
-    <button @click="theme = !theme"> change theme {{bodyBg}}</button>
+    <button class="theme-button btn bg-card" @click="theme = !theme">🌓</button>
   </main>
 </template>
 
@@ -28,6 +29,15 @@ body{
   background-size: 100vh;
   background-repeat: no-repeat;
   background-position: bottom right;
+}
+
+.theme-button{
+  border: solid 1px var(--bs-primary);
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 50px!important;
+
 }
 
 </style>
