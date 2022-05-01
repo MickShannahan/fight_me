@@ -38,11 +38,13 @@ $color-ranges: (
 $themes: (
         default: (
                 bg: $light,
+                bg-nav: $primary,
                 bg-card: lighten($light, 5),
                 text: $dark
         ),
         dark: (
                 bg: $dark,
+                bg-nav: darken($dark, 5),
                 bg-card: darken($dark, 5),
                 text: $light
         )

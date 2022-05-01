@@ -1,48 +1,19 @@
 <template>
   <span class="navbar-text">
     <button
-      class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0"
+      class="btn selectable text text-uppercase my-2 my-lg-0"
       @click="login"
       v-if="!user.isAuthenticated"
     >
       Login
     </button>
-
-    <div class="dropdown my-2 my-lg-0" v-else>
-      <div
-        class="dropdown-toggle selectable"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        id="authDropdown"
-      >
-        <div v-if="account.picture">
-          <img
-            :src="account.picture"
-            alt="account photo"
-            height="40"
-            class="rounded"
-          />
-          <span class="mx-3 text-success lighten-30">{{ account.name }}</span>
-        </div>
-      </div>
-      <div
-        class="dropdown-menu p-0 list-group w-100"
-        aria-labelledby="authDropdown"
-      >
-        <router-link :to="{ name: 'Account' }">
-          <div class="list-group-item list-group-item-action hoverable">
-            Manage Account
-          </div>
-        </router-link>
-        <div
-          class="list-group-item list-group-item-action hoverable text-danger"
-          @click="logout"
-        >
-          <i class="mdi mdi-logout"></i>
-          logout
-        </div>
-      </div>
+    <div v-else class="drop-menu text">
+    <div class="selectable">Dashboard</div>
+    <div class="selectable">Account</div>
+    <div class="selectable f-100" @click="logout">logout</div>
     </div>
+
+
   </span>
 </template>
 
@@ -69,16 +40,17 @@ export default {
 
 
 <style lang="scss" scoped>
-.dropdown-menu {
-  user-select: none;
-  display: block;
-  transform: scale(0);
-  transition: all 0.15s linear;
+@import "../assets/scss/main.scss";
+
+.drop-menu {
+
+
+  div{
+    margin: .5em 0px;
+    padding: .25em .5em;
+    border-radius: 5px;
+    font-weight: bold;
+  }
 }
-.dropdown-menu.show {
-  transform: scale(1);
-}
-.hoverable {
-  cursor: pointer;
-}
+
 </style>
