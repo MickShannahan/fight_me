@@ -24,10 +24,32 @@ ALTER TABLE games
   ADD colorSecondary TEXT;
 
 INSERT INTO games
-(title)
-VALUES ("Jackie Chan Fists of Fire");
+(title, img, posterImg)
+VALUES ("mortal Kombat 3", "https://upload.wikimedia.org/wikipedia/en/9/9e/Mortal_Kombat_3_cover.JPG", "https://static-cdn.jtvnw.net/ttv-boxart/1999_IGDB-272x380.jpg");
 
--- select * FROM games;
+DELETE FROM games WHERE id = 11;
+
+SELECT
+  g.*,
+  COUNT(m.id) AS popularity
+  FROM games g
+  LEFT JOIN matches m on m.gameId = g.id
+  GROUP BY g.id
+  ORDER BY popularity DESC;
+
+     SELECT
+      g.*,
+      COUNT(m.id) AS popularity,
+      c.name
+      FROM gameCategories gc
+        JOIN games g ON gc.gameId = g.id
+        JOIN categories c ON gc.categoryId = c.id
+        LEFT JOIN matches m on m.gameId = g.id
+      WHERE c.name LIKE '%anime%' OR REPLACE(c.name, ' ', '') LIKE '%anime%'
+      GROUP BY g.id
+      ORDER BY popularity DESC;   
+
+SELECT * FROM games;
 -- select * FROM matches;
 SELECT 
   p1.name AS player1,
@@ -59,7 +81,7 @@ name TEXT NOT NULL
 )default charset utf8 COMMENT '';
 ALTER TABLE categories ADD UNIQUE KEY kname(`name`);
 
-INSERT INTO categories(name) VALUES ("Cross");
+INSERT INTO categories(name) VALUES ("Classic");
 
 CREATE TABLE systems(
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -79,6 +101,8 @@ CREATE TABLE gameCategories(
   FOREIGN KEY (categoryId) 
     REFERENCES categories(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
+
+INSERT INTO gamecategories (gameId, categoryId) VALUES (7, 21);
 
 CREATE TABLE gameSystems(
   id INT AUTO_INCREMENT PRIMARY KEY,
