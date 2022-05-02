@@ -5,6 +5,7 @@ namespace fight_me.Interfaces
   public interface IRepo<T>
     {
       public List<T> GetAll(string search);
+      public List<T> GetAll(int? gameId);
 
       public T GetById(int id);
 

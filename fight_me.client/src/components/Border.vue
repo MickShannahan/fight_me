@@ -14,7 +14,7 @@ setup(){}
 @import "../assets/scss/main.scss";
 
 .border-gradient{
-  padding: 2px;
+  padding: 2px!important;
 	background: linear-gradient(to top, $primary, $secondary);
   * {
     border-radius: inherit;

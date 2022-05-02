@@ -16,10 +16,13 @@ namespace fight_me.Controllers
     }
 
     [HttpGet]
-    public ActionResult<List<object>> GetAll(string type, string search)
+    public ActionResult<List<object>> GetAll(string type, string search, int? gameId)
     {
       try
       {
+        if(gameId != null){
+          return Ok(_service.GetAll(type, gameId));
+        }
         return Ok(_service.GetAll(type, search));
       }
       catch (System.Exception e)
@@ -27,6 +30,7 @@ namespace fight_me.Controllers
         return BadRequest(e.Message);
       }
     }
+
 
      [HttpGet("{id}")]
     public ActionResult<object> GetById(string type, int id)
@@ -81,6 +85,7 @@ namespace fight_me.Controllers
       {
         return BadRequest(e.Message);
       }
+      
     }
   }
 }

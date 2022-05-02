@@ -21,6 +21,10 @@ namespace fight_me.Services
     {
       return repos[type].GetAll(search);
     }
+     internal List<object> GetAll(string type, int? gameId)
+    {
+      return repos[type].GetAll(gameId);
+    }
 
     internal object GetById(string type, int id)
     {

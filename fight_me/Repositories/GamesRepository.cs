@@ -16,16 +16,67 @@ namespace fight_me.Repositories
     {
       _db = db;
     }
+
+
     public new List<object> GetAll(string search)
     {
       search = "%" + search +"%";
       string sql = @"
+     SELECT
+      g.*,
+      COUNT(m.id) AS popularity
+    FROM games g
+      LEFT JOIN matches m on m.gameId = g.id
+    WHERE title LIKE @search OR subtitle LIKE @search OR REPLACE(title, ' ', '') LIKE @search OR REPLACE(subtitle, ' ', '') LIKE @search
+    GROUP BY g.id
+    ORDER BY popularity DESC;
+    ";
+      return _db.Query<object>(sql, new {search}).ToList();
+    }
+
+    public new List<object> GetAll(int? gameId)
+    {
+      string sql = @"
         SELECT 
         *
         FROM games
-        WHERE title LIKE @search OR subtitle LIKE @search;
+        WHERE gameId = @gameId;
       ";
-      return _db.Query<object>(sql, new {search}).ToList();
+      return _db.Query<object>(sql, new {gameId}).ToList();
+    }
+
+    internal List<Game> GetByCategory(int? categoryId)
+    {
+      string sql = @"
+      SELECT
+      g.*,
+      COUNT(m.id) AS popularity
+      FROM gameCategories gc
+        JOIN games g ON gc.gameId = g.id
+        LEFT JOIN matches m on m.gameId = g.id
+      WHERE gc.categoryId = @categoryId
+      GROUP BY g.id
+      ORDER BY popularity DES;     
+      ";
+      return _db.Query<Game>(sql, new {categoryId}).ToList();
+    }
+     internal List<Game> GetByCategory(string category)
+    {
+      category = "%" + category + "%";
+      string sql = @"
+      SELECT
+      g.*,
+      COUNT(m.id) AS popularity,
+      c.name
+      FROM gameCategories gc
+        JOIN games g ON gc.gameId = g.id
+        JOIN categories c ON gc.categoryId = c.id
+        LEFT JOIN matches m on m.gameId = g.id
+      WHERE c.name LIKE @category OR REPLACE(c.name, ' ', '') LIKE @category
+      GROUP BY g.id
+      ORDER BY popularity DESC;     
+      ";
+      return _db.Query<Game>(sql, new {category}).ToList();
     }
 
     public new object GetById(int id)

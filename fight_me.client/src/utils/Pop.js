@@ -52,4 +52,19 @@ export default class Pop {
       showConfirmButton: false
     })
   }
+  static error(error ={}, position = 'top-end') {
+    Swal.fire({
+      title: error.response?.data?.error?.message || error.response?.data || error.message,
+      icon: 'error',
+      position: position,
+      timer: 4000,
+      timerProgressBar: true,
+      toast: true,
+      showConfirmButton: false,
+      customClass:{
+        popup: 'bg-danger lighten-30',
+        title: 'text-dark'
+      }
+    })
+  }
 }

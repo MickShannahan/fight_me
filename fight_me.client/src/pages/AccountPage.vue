@@ -7,11 +7,22 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
+import Pop from "../utils/Pop"
+import { logger } from "../utils/Logger"
+import { accountService } from "../services/AccountService"
 export default {
   name: 'Account',
   setup() {
+    onMounted(async() =>{
+      try {
+        await accountService.getAccount()
+      } catch (error) {
+        Pop.toast(error.message)
+        logger.error(error)
+      }
+    })
     return {
       account: computed(() => AppState.account)
     }

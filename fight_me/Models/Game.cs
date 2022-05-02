@@ -11,5 +11,6 @@ namespace fight_me.Models
         public string PosterImg { get; set; }
         public string ColorPrimary { get; set; }
         public string ColorSecondary { get; set; }
+        public int? Popularity { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace fight_me.Repositories
       _db = db;
     }
 
-       public new List<object> GetAll(string search)
+    public new List<object> GetAll(string search)
     {
       search = "%" + search +"%";
       string sql = @"
@@ -27,6 +27,19 @@ namespace fight_me.Repositories
         WHERE name LIKE @search;
       ";
       return _db.Query<object>(sql, new {search}).ToList();
+    }
+
+      public new List<object> GetAll(int? gameId)
+    {
+      string sql = @"
+        SELECT 
+        gc.*,
+        c.name
+        FROM gameCategories gc
+        JOIN categories c ON gc.categoryId = c.id
+        WHERE gc.gameId = @gameId;
+      ";
+      return _db.Query<object>(sql, new {gameId}).ToList();
     }
 
     public new object GetById(int id)
