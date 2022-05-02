@@ -32,6 +32,10 @@
   font-size: 14px;
 }
 
+i{
+  font-size: 18px;
+}
+
 .text{
   @include themed(){
     color: _('text');
