@@ -21,6 +21,7 @@ CREATE TRIGGER  matches_ranked_elo
   AFTER INSERT ON matches FOR EACH ROW
 BEGIN
   CALL get_elo_change(NEW.id, IF(NEW.ranked = 1, 32, 12), @eloChange);
+  SET @elo = @eloChange;
     IF NEW.ranked = 1 THEN
   UPDATE accounts a SET
       a.rankedElo = a.rankedElo + IF(NEW.winnerId = a.id, @eloChange, 0),
@@ -31,15 +32,34 @@ BEGIN
       a.elo = a.elo + IF(NEW.winnerId = a.id, @eloChange, 0),
       a.elo = a.elo - IF(NEW.winnerId != a.id, @eloChange, 0)
   WHERE NEW.player1 = a.id OR NEW.player2 = a.id;
+
+  CALL matches_league_elo(NEW.id, @elo);
     END IF;
 END//
 DELIMITER ;
 
-IF condition THEN
-   statements;
-ELSE
-   else-statements;
-END IF;
+/* PROCEDUR FOR PLAYER RANK CHANGING FOR EACH GAME */
+/* ANCHOR this procedure to update playerLeague data, stuck on update join */
+DROP PROCEDURE matches_league_elo;
+DELIMITER //
+CREATE PROCEDURE  matches_league_elo(
+  IN mId INT,
+  IN eloChange INT
+)
+BEGIN
+  UPDATE playerLeagues pl, matches m
+   m.gameId = pl.gameId
+  SET
+    pl.matchesPlayed = pl.matchesPlayed + 1,
+    pl.elo = pl.elo + IF(m.winnerId = pl.accountId, eloChange, 0),
+    pl.elo = pl.elo - IF(m.winnerId != pl.accounId, eloChange, 0)
+  WHERE m.id = mId;
+END//
+DELIMITER ;
+SELECT *
+FROM playerleagues pl
+JOIN matches m ON pl.gameId = m.gameId WHERE m.id = 63;
+
 /* ELO calculation PROCEDURE */
 DROP PROCEDURE IF EXISTS get_elo_change;
 DELIMITER //
@@ -72,7 +92,8 @@ SELECT @eloChange;
 
 UPDATE accounts SET rankedElo = 1000, elo = 1000;
 
+/* PLAY GAME */
 INSERT INTO matches
 (`gameId`,player1, player2, `winnerId`, ranked)
 VALUES
-(2, "60d3560eceb6bbdfae388576", "6234ac00abca50735a3c9205", "60d3560eceb6bbdfae388576", 0);
+(3, "6216b36ebc31a249987812b1", "6234ac00abca50735a3c9205", "6216b36ebc31a249987812b1", 0);
