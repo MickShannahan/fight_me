@@ -1,4 +1,5 @@
 <template>
+
 <div class="side-nav text">
 
   <Login class=" text"/>
@@ -43,7 +44,8 @@ export default {
 @import "../assets/scss/main.scss";
 
 .side-nav{
-  position: fixed;
+  position: absolute;
+  z-index: 1050;
   left: 0;
   top: 0;
   bottom: 0;

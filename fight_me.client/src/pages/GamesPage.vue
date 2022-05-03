@@ -19,13 +19,15 @@
 </template>
 
 <script>
-import { computed, onMounted } from "@vue/runtime-core"
+import { computed, onMounted, watchEffect } from "@vue/runtime-core"
 import { AppState } from "../AppState"
 import Pop from "../utils/Pop"
 import { logger } from "../utils/Logger"
 import { gamesService} from '../services/GamesService'
+import { useRoute } from "vue-router"
 export default {
   setup(){
+    const route = useRoute()
     onMounted(async ()=> {
        try {
 
@@ -34,6 +36,9 @@ export default {
         Pop.toast(error.message)
         logger.error(error)
       }
+      watchEffect(()=>{
+        if(route.name != 'Games') AppState.activeGame = {}; AppState.searchCategories=[];
+      })
     })
     return{
       activeGame: computed(()=> AppState.activeGame),
