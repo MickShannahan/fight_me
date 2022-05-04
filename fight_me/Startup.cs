@@ -40,6 +40,9 @@ namespace fight_me
             services.AddTransient<SystemsRepository>();
             services.AddTransient<GenericService>();
             services.AddTransient<GamesService>();
+            services.AddTransient<LeaguesRepo>();
+            services.AddTransient<LeaguesService>();
+            
         }
 
         private void ConfigureCors(IServiceCollection services)

@@ -1,6 +1,7 @@
 <template>
 <div class="wrapper">
 <div class="game selectable elevation-2 p-2" @click="gameClicked">
+  <Rank v-if="$route.name == 'Fight'" class="league-icon" :gameId="game.id"/>
 </div>
   <div class="title">
     {{game.title}}
@@ -65,6 +66,7 @@ export default {
 }
 
 .game{
+  position: relative;
   border-radius: 3px;
   transition: all .1s linear;
   min-height: 24vh;
@@ -89,5 +91,15 @@ export default {
   margin-bottom: .25em;
 }
 
+.league-icon{
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  right: -20px;
+  top: -20px;
+  color: $dark;
+  padding: .5em;
+  border-radius: 5px;
+}
 
 </style>

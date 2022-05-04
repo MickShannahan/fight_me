@@ -6,6 +6,7 @@ export const AppState = reactive({
   theme: false,
   user: {},
   account: {},
+  accountLeagues: {},
   games: [],
   activeGame: {},
   categories: {},

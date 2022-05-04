@@ -89,8 +89,8 @@ BEGIN
     INTO
       @elo1, @elo2
     FROM matches m
-    LEFT JOIN playerLeagues AS p1 ON m.winnerId = p1.accountId
-    LEFT JOIN playerLeagues AS p2 ON p2.accountId = IF(m.winnerId = m.player1, m.player2, m.player1)
+    LEFT JOIN playerLeagues AS p1 ON m.winnerId = p1.accountId AND m.gameId = p1.gameId
+    LEFT JOIN playerLeagues AS p2 ON p2.accountId = IF(m.winnerId = m.player1, m.player2, m.player1) AND m.gameId = p2.gameId
     WHERE m.id = matchId;
   SET @r1 = POWER(10, @elo1/400);
   SET @r2 = POWER(10, @elo2/400);
@@ -105,10 +105,11 @@ DELIMITER ;
 CALL get_elo_change(2400, 2000, @eloChange);
 SELECT @eloChange;
 
-UPDATE accounts SET rankedElo = 1000, elo = 1000;
+UPDATE accounts SET rankedElo = 1605, elo = 1500 WHERE id = '6216b36ebc31a249987812b1';
+UPDATE playerleagues SET rankedElo = 1605, elo = 1500 WHERE id = 1;
 
 /* PLAY GAME */
 INSERT INTO matches
 (`gameId`,player1, player2, `winnerId`, ranked)
 VALUES
-(5, "6216b36ebc31a249987812b1", "6234ac00abca50735a3c9205", "6216b36ebc31a249987812b1", 0);
+(5, "6216b36ebc31a249987812b1", "6234ac00abca50735a3c9205", "6216b36ebc31a249987812b1", 1);

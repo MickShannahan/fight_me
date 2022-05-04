@@ -14,13 +14,15 @@ namespace fight_me.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AccountService _accountService;
+        private readonly LeaguesService _lService;
 
-        public AccountController(AccountService accountService)
-        {
-            _accountService = accountService;
-        }
+    public AccountController(AccountService accountService, LeaguesService lService)
+    {
+      _accountService = accountService;
+      _lService = lService;
+    }
 
-        [HttpGet]
+    [HttpGet]
         [Authorize]
         public async Task<ActionResult<Account>> Get()
         {
@@ -34,7 +36,19 @@ namespace fight_me.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+         [HttpGet("leagues")]
+     public async Task<ActionResult<List<GameLeague>>> GetAccountLeagues()
+     {
+        try
+        {
+            Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+            return Ok(_lService.GetAccountLeagues(userInfo.Id));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+     }
     }
-
-
 }

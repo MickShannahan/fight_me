@@ -12,6 +12,10 @@ INSERT INTO leagues
 VALUES
 ('Bronze', 0, 1149)('Silver', 1150, 1599)('Gold', 1600, 2099)('Diamond', 2100, 5000);
 
+UPDATE leagues SET
+img = '../assets/img/3d/FM-Rank-Diamond.png'
+WHERE id = 4;
+
 SELECT * FROM leagues;
 
 CREATE TABLE IF NOT EXISTS playerLeagues(
@@ -33,17 +37,18 @@ DROP TABLE playerleagues;
 INSERT INTO playerLeagues
 (accountId, gameId)
 VALUES
-('6234ac00abca50735a3c9205', 5);
+('6216b36ebc31a249987812b1', 11);
 
 /* GET PLAYER RANKS */
 SELECT 
   g.*,
   l.name,
-  pl.elo
+  pl.elo, pl.rankedElo
 FROM playerleagues pl
   JOIN games g ON pl.gameId = g.id
   JOIN leagues l ON pl.elo > l.minElo AND pl.elo < l.maxElo
 WHERE pl.accountId = '6216b36ebc31a249987812b1';
+
 
 /* GET GAME LEADERBOARD */
 SELECT 

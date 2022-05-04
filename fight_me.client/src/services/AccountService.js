@@ -11,6 +11,12 @@ class AccountService {
       logger.error('HAVE YOU STARTED YOUR SERVER YET???', err)
     }
   }
+
+  async getAccountLeagues(){
+    const res = await api.get('/account/leagues')
+    logger.log('account leagues', res.data)
+    res.data.forEach(l => AppState.accountLeagues[l.id] = l)
+  }
 }
 
 export const accountService = new AccountService()

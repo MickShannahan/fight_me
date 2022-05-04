@@ -1,6 +1,6 @@
 <template>
 <Border class="rounded">
-  <div class="bg-card rounded row px-3 pb-3 pt-1">
+  <div class="bg-card rounded row px-3 pb-3 pt-1 text">
     <!-- SORT -->
     <div class="col-12">
       <div class="row justify-content-between py-3 ">

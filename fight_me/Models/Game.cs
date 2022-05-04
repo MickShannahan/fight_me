@@ -13,4 +13,14 @@ namespace fight_me.Models
         public string ColorSecondary { get; set; }
         public int? Popularity { get; set; }
     }
+
+    public class GameLeague : Game
+    {
+      public League? League { get; set; }
+      public string AccountId { get; set; }      
+      public int Elo { get; set; }
+      public int Matches { get; set; }
+      public int RankedElo { get; set; }
+      public int RankedMatches { get; set; }
+    }
 }
