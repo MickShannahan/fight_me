@@ -18,18 +18,22 @@ CREATE TABLE IF NOT EXISTS playerLeagues(
 id INT AUTO_INCREMENT PRIMARY KEY,
 accountId VARCHAR(255) NOT NULL,
 gameId INT NOT NULL,
-elo INT NOT NULL DEFAULT 1200,
-matchesPlayed INT NOT NULL DEFAULT 0,
+elo INT NOT NULL DEFAULT 1400,
+Matches INT NOT NULL DEFAULT 0,
+rankedElo INT NOT NULL DEFAULT 1200,
+rankedMatches INT NOT NULL DEFAULT 0,
 rankDownSaves INT NOT NULL DEFAULT 0,
   FOREIGN KEY(accountId) REFERENCES accounts (id) ON DELETE CASCADE,
   FOREIGN KEY(gameId) REFERENCES games (id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
+CREATE UNIQUE INDEX index_player_league
+ON playerLeagues(accountId,gameId);
 DROP TABLE playerleagues;
 
 INSERT INTO playerLeagues
 (accountId, gameId)
 VALUES
-('6216b36ebc31a249987812b1', 5);
+('6234ac00abca50735a3c9205', 5);
 
 /* GET PLAYER RANKS */
 SELECT 
@@ -44,12 +48,12 @@ WHERE pl.accountId = '6216b36ebc31a249987812b1';
 /* GET GAME LEADERBOARD */
 SELECT 
   a.name,
-  pl.elo,
-  pl.matchesPlayed
+  pl.elo, pl.rankedElo,
+  pl.matches, pl.rankedMatches
 FROM playerleagues pl
   JOIN accounts a ON pl.accountId = a.id
   JOIN leagues l ON pl.elo > l.minElo AND pl.elo < l.maxElo
-WHERE pl.gameId = 3
+WHERE pl.gameId = 5
 ORDER BY pl.elo DESC;
 
 /* UPDATE PLAYER RANKS */

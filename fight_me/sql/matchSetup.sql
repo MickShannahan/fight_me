@@ -19,21 +19,28 @@ DROP TRIGGER IF EXISTS matches_ranked_elo;
 DELIMITER //
 CREATE TRIGGER  matches_ranked_elo
   AFTER INSERT ON matches FOR EACH ROW
-BEGIN
-  CALL get_elo_change(NEW.id, IF(NEW.ranked = 1, 32, 12), @eloChange);
-  SET @elo = @eloChange;
+BEGIN--                                 ranked CoK   casual CoK
+  CALL get_elo_change(NEW.id, IF(NEW.ranked = 1, 20, 8), @globElo, @gameElo);
     IF NEW.ranked = 1 THEN
-  UPDATE accounts a SET
-      a.rankedElo = a.rankedElo + IF(NEW.winnerId = a.id, @eloChange, 0),
-      a.rankedElo = a.rankedElo - IF(NEW.winnerId != a.id, @eloChange, 0)
+  UPDATE accounts a SET --updated ranked global
+      a.rankedElo = a.rankedElo + IF(NEW.winnerId = a.id, @globElo, 0),
+      a.rankedElo = a.rankedElo - IF(NEW.winnerId != a.id, @globElo, 0)
   WHERE NEW.player1 = a.id OR NEW.player2 = a.id;
+  UPDATE playerLeagues pl SET -- update ranked for game
+    pl.rankedMatches = pl.rankedMatches + 1,
+    pl.rankedElo = pl.rankedElo + IF(NEW.winnerId = pl.accountId, @gameElo, 0),
+    pl.rankedElo = pl.rankedElo - IF(NEW.winnerId != pl.accountId, @gameElo, 0)
+  WHERE NEW.gameId = pl.gameId AND (NEW.player1 = pl.accountId OR NEW.player2 = pl.accountId);
     ELSE
-  UPDATE accounts a SET
-      a.elo = a.elo + IF(NEW.winnerId = a.id, @eloChange, 0),
-      a.elo = a.elo - IF(NEW.winnerId != a.id, @eloChange, 0)
+  UPDATE accounts a SET -- update global casual
+      a.elo = a.elo + IF(NEW.winnerId = a.id, @globElo, 0),
+      a.elo = a.elo - IF(NEW.winnerId != a.id, @globElo, 0)
   WHERE NEW.player1 = a.id OR NEW.player2 = a.id;
-
-  CALL matches_league_elo(NEW.id, @elo);
+  UPDATE playerLeagues pl SET -- update casual for game
+    pl.matches = pl.matches + 1,
+    pl.elo = pl.elo + IF(NEW.winnerId = pl.accountId, @gameElo, 0),
+    pl.elo = pl.elo - IF(NEW.winnerId != pl.accountId, @gameElo, 0)
+  WHERE NEW.gameId = pl.gameId AND (NEW.player1 = pl.accountId OR NEW.player2 = pl.accountId);
     END IF;
 END//
 DELIMITER ;
@@ -47,13 +54,7 @@ CREATE PROCEDURE  matches_league_elo(
   IN eloChange INT
 )
 BEGIN
-  UPDATE playerLeagues pl, matches m
-   m.gameId = pl.gameId
-  SET
-    pl.matchesPlayed = pl.matchesPlayed + 1,
-    pl.elo = pl.elo + IF(m.winnerId = pl.accountId, eloChange, 0),
-    pl.elo = pl.elo - IF(m.winnerId != pl.accounId, eloChange, 0)
-  WHERE m.id = mId;
+
 END//
 DELIMITER ;
 SELECT *
@@ -66,10 +67,11 @@ DELIMITER //
 CREATE PROCEDURE get_elo_change(
   IN matchId INT,
   IN k INT,
-  OUT eloChange INT
+  OUT globElo INT,
+  OUT gameElo INT
 )
 BEGIN
-    SELECT
+    SELECT -- global elo change
       IF(m.ranked = 1, p1.rankedElo, p1.elo),IF(m.ranked = 1, p2.rankedElo, p2.elo)
     INTO
       @elo1, @elo2
@@ -80,7 +82,20 @@ BEGIN
   SET @r1 = POWER(10, @elo1/400);
   SET @r2 = POWER(10, @elo2/400);
   SET @e1 = @r1/(@r1+@r2);
-  SET eloChange = ABS((@elo1 + (k * (1 - @e1))) - @elo1);
+  SET globElo = ABS((@elo1 + (k * (1 - @e1))) - @elo1);
+
+    SELECT -- game elo change
+      IF(m.ranked = 1, p1.rankedElo, p1.elo),IF(m.ranked = 1, p2.rankedElo, p2.elo)
+    INTO
+      @elo1, @elo2
+    FROM matches m
+    LEFT JOIN playerLeagues AS p1 ON m.winnerId = p1.accountId
+    LEFT JOIN playerLeagues AS p2 ON p2.accountId = IF(m.winnerId = m.player1, m.player2, m.player1)
+    WHERE m.id = matchId;
+  SET @r1 = POWER(10, @elo1/400);
+  SET @r2 = POWER(10, @elo2/400);
+  SET @e1 = @r1/(@r1+@r2);
+  SET gameElo = ABS((@elo1 + (k * (1 - @e1))) - @elo1);
 END//
 DELIMITER ;
 
@@ -96,4 +111,4 @@ UPDATE accounts SET rankedElo = 1000, elo = 1000;
 INSERT INTO matches
 (`gameId`,player1, player2, `winnerId`, ranked)
 VALUES
-(3, "6216b36ebc31a249987812b1", "6234ac00abca50735a3c9205", "6216b36ebc31a249987812b1", 0);
+(5, "6216b36ebc31a249987812b1", "6234ac00abca50735a3c9205", "6216b36ebc31a249987812b1", 0);
