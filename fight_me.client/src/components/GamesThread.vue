@@ -10,10 +10,10 @@
       </div>
     </div>
     <!-- GAMES STACK -->
-    <div class=" col-custom"  v-for="g in games" :key="g.id">
+    <div class="col-custom"  v-for="g in games" :key="g.id">
       <Game :game="g" @gameClick="gameClicked"/>
     </div>
-    <div v-for="num in 7" :key="num" class="col-custom placeholder">
+    <div v-for="num in 10" :key="num" class="col-custom placeholder">
 
     </div>
   </div>
@@ -38,6 +38,8 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/main.scss";
 
+
+
 .placeholder{
   background-color: transparent;
   cursor: unset !important;
@@ -47,6 +49,6 @@ export default {
   padding: 0 .5em;
   flex: 1 0 auto;
   width: 10rem;
-  max-width: 50%;
+  max-width: 13em;
 }
 </style>

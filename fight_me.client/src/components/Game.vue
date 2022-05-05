@@ -9,8 +9,11 @@
   <div class="subtitle">
     {{game.subtitle}}
   </div>
-  <div class="f-13">
+  <div v-if="!inQueue" class="f-13">
     <Categories :categories="categories?.slice(0,2)" @clicked="searchByCategory"/>
+  </div>
+  <div v-else>
+      stuff
   </div>
 </div>
 </template>
@@ -42,6 +45,7 @@ export default {
     return{
       categories: computed(()=> AppState.categories[props.game.id]),
       bgImage: computed(()=> `url(${props.game.posterImg})`),
+      inQueue: computed(()=> AppState.gameQueue.includes(props.game)),
       searchByCategory(category){
         logger.log(category)
         gamesService.getGames('?category='+category.name)
