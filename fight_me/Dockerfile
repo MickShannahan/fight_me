@@ -12,4 +12,4 @@ RUN dotnet publish -c Release -o out
 # FROM mcr.microsoft.com/dotnet/sdk:6.0
 # WORKDIR /App
 # CMD ASPNETCORE_URLS=http://* fight_me.dll
-ENTRYPOINT ["dotnet", "fight_me.dll"]
+ENTRYPOINT ["fight_me.dll"]
