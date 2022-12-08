@@ -8,4 +8,4 @@ RUN dotnet restore
 # Build and publish a release
 RUN dotnet publish -c Release -o out
 
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet fight_me.dll
+CMD ASPNETCORE_URLS=http://* dotnet fight_me.dll
