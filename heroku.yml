@@ -1,4 +1,3 @@
 build:
   docker:
-    web: Dockerfile
-    worker: fight_me/Dockerfile
+    web: fight_me/Dockerfile
