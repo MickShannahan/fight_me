@@ -61,6 +61,23 @@
   }
 }
 
+
+@mixin selectable($color: inherit, $font: inherit, $intensity: 0.1, $scale: 1, $moveY: 0, $moveX :0, $mode: 'normal') {
+  position: relative;
+  transition: all .1s cubic-bezier(0.4, 0, 0.6, 1);
+
+  &:hover {
+    cursor: pointer;
+    transform: scale($scale) translate($moveX, $moveY);
+    background-color: $color !important;
+    color: $font !important;
+
+    &:after {
+      opacity: $intensity;
+    }
+  }
+}
+
 .clip-text {
   white-space: nowrap;
   text-overflow: ellipsis;

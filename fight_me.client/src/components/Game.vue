@@ -9,11 +9,8 @@
   <div class="subtitle">
     {{game.subtitle}}
   </div>
-  <div v-if="!inQueue" class="f-13">
+  <div  class="f-13">
     <Categories :categories="categories?.slice(0,2)" @clicked="searchByCategory"/>
-  </div>
-  <div v-else>
-      stuff
   </div>
 </div>
 </template>

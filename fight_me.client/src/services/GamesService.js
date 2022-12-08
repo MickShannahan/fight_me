@@ -14,6 +14,13 @@ class GamesService{
     AppState.loading = false
   }
 
+  async getLeaderboard(id){
+    AppState.activeGameLeaderboard = []
+    const res = await api.get('api/games/' + id + '/leaderboard')
+    logger.log('Game leaderboard', res.data)
+    AppState.activeGameLeaderboard = res.data
+  }
+
 }
 
 export const gamesService = new GamesService()

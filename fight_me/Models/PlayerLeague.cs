@@ -10,5 +10,9 @@ namespace fight_me.Models
         public int RankedElo { get; set; }
         public int RankedMatches { get; set; }
         public int RankedDownSaves { get; set; }
+
+        public Profile? Account { get; set; }
+        public Game? Game { get; set; }
+        public League? League { get; set; }
     }
 }

@@ -9,10 +9,12 @@ namespace fight_me.Controllers
     public class GamesController : ControllerBase
     {
         private readonly GamesService _gs;
+        private readonly LeaguesService _ls;
 
-    public GamesController(GamesService gs)
+    public GamesController(GamesService gs, LeaguesService ls)
     {
       _gs = gs;
+      _ls = ls;
     }
 
     [HttpGet]
@@ -31,5 +33,18 @@ namespace fight_me.Controllers
          return BadRequest(e);
          }
      }
+
+     [HttpGet("{id}/leaderboard")]
+    public ActionResult<List<PlayerLeague>> GetLeaderboard(int id)
+    {
+        try
+        {
+            return Ok(_ls.GetLeaderboard(id));
+        }
+        catch (System.Exception e)
+        {
+            return BadRequest(e);
+        }
+    }
     }
 }

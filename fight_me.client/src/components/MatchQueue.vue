@@ -15,7 +15,7 @@
     <div class="bungee col-12 text-center py-3">Current Queue</div>
       <div class=" col-custom"  v-for="g in gameQueue" :key="g.id">
         <Game :game="g"/>
-      <i class="mdi mdi-close btn btn-danger" @click="removeFromQ(g.id)"></i>
+        <i class="mdi mdi-close btn btn-danger " @click="removeFromQ(g.id)"></i>
 
       </div>
       <!-- <div v-for="num in 6" :key="num" class="col-custom placeholder"></div> -->
@@ -44,19 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/main.scss";
-.mdi-close{
-  position: absolute;
-  background: $danger;
-  height: 30px;
-  width: 30px;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  left: calc(50% - 15px);
-  top: 65%;
-}
+
 
 
 .game-queue{
@@ -80,5 +68,26 @@ export default {
   flex: 1 0 auto;
   width: 10rem;
   max-width: 15em;
+  .mdi-close{
+    position: absolute !important;
+    background: $danger;
+    height: 40px;
+    width: 40px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    top: 0;
+    left: calc(50% - 15px);
+    transition: all .1s ease;
+    transform: translateY(5px);
+    opacity: 0;
+    @include selectable($light, $danger, .5 )
+  }
+  &:hover .mdi-close{
+    transform: translateY(-40px);
+    opacity: 1;
+  }
 }
 </style>

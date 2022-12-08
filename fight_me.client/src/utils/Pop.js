@@ -1,5 +1,8 @@
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import { computed } from "vue"
+import { AppState } from "../AppState"
+import { logger } from "./Logger"
 
 export default class Pop {
   /**
@@ -42,6 +45,8 @@ export default class Pop {
  * {@link https://sweetalert2.github.io/#configuration|Check out Sweet Alerts}
  */
   static toast(title = 'Warning!', display = 'warning', position = 'top-end', timer = 3000, progressBar = true) {
+    const theme = AppState.theme
+    logger.log(theme)
     Swal.fire({
       title: title,
       icon: display,
@@ -49,7 +54,11 @@ export default class Pop {
       timer: timer,
       timerProgressBar: progressBar,
       toast: true,
-      showConfirmButton: false
+      showConfirmButton: false,
+      customClass:{
+        popup: theme ? 'bg-white': 'bg-secondary' ,
+        title: theme ? 'text-dark' : 'text-dark'
+      }
     })
   }
   static error(error ={}, position = 'top-end') {

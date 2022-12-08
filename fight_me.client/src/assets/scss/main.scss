@@ -5,6 +5,12 @@
 @import "./loaders.scss";
 @import "./mixins.scss";
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Hairline&family=Montserrat:wght@100;200;300;400;500;600;700&family=Nunito:wght@200;300;400;500;600;700&display=swap');
+
+@mixin bungee($weight: 500) {
+  font-family: 'Bungee', cursive;
+  font-weight: $weight;
+}
+
 .bungee{
   font-family: 'Bungee', cursive;
   &-light{

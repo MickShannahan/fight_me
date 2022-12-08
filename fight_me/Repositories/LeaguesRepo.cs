@@ -34,5 +34,25 @@ namespace fight_me.Repositories
           return g;
       }, new {id}).ToList();
     }
+
+      internal List<PlayerLeague> GetLeaderboard(int gameId)
+    {
+      string sql = @"
+        SELECT 
+          a.*, 
+          l.*, 
+          pl.*
+        FROM playerleagues pl
+          JOIN accounts a ON pl.accountId = a.id
+          JOIN leagues l ON pl.elo > l.minElo AND pl.elo < l.maxElo
+        WHERE pl.gameId = @gameId
+        ORDER BY pl.elo DESC;
+      ";
+      return _db.Query<Profile, League, PlayerLeague, PlayerLeague>(sql, (p, l, pl)=>{
+        pl.Account = p;
+        pl.League = l;
+        return pl;
+      }, new {gameId}).ToList();
+    }
   }
 }

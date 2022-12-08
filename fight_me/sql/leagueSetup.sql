@@ -52,12 +52,15 @@ WHERE pl.accountId = '6216b36ebc31a249987812b1';
 
 /* GET GAME LEADERBOARD */
 SELECT 
-  a.name,
+  a.name, a.id AS accountId,
+  l.name, l.id AS leagueId,
+  g.title,
   pl.elo, pl.rankedElo,
   pl.matches, pl.rankedMatches
 FROM playerleagues pl
   JOIN accounts a ON pl.accountId = a.id
   JOIN leagues l ON pl.elo > l.minElo AND pl.elo < l.maxElo
+  JOIN games g ON pl.gameId = g.id
 WHERE pl.gameId = 5
 ORDER BY pl.elo DESC;
 

@@ -17,5 +17,10 @@ namespace fight_me.Services
     {
       return _repo.GetAccountLeagues(id);
     }
+
+    internal List<PlayerLeague> GetLeaderboard(int id)
+    {
+      return _repo.GetLeaderboard(id);
+    }
   }
 }
