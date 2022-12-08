@@ -1,0 +1,104 @@
+@import "./_variables.scss";
+@import "bootstrap";
+@import "./_overrides.scss";
+@import "./utilities.scss";
+@import "./loaders.scss";
+@import "./mixins.scss";
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Hairline&family=Montserrat:wght@100;200;300;400;500;600;700&family=Nunito:wght@200;300;400;500;600;700&display=swap');
+.bungee{
+  font-family: 'Bungee', cursive;
+  &-light{
+    font-family: 'Bungee Hairline', cursive;
+  }
+}
+.nunito{
+  font-family: 'Nunito', sans-serif;
+
+}
+.montserat{
+  font-family: 'Montserrat', sans-serif;
+ 
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+  font-size: 14px;
+}
+
+.text{
+  @include themed(){
+    color: _('text');
+    transition: color .5s ease;
+
+  }
+}
+
+.bg{
+  @include themed(){
+    background-color: _('bg');
+    &-card{
+      background-color: _('bg-card');
+      transition: background-color .5s ease;
+  }
+  }
+    transition: background-color .5s ease;
+}
+
+
+
+main {
+  flex-grow: 1;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+textarea,
+select {
+  &:not(:placeholder-shown) {
+    &:valid {
+      border: 1px solid $success;
+    }
+    &:invalid {
+      border: 1px solid $danger;
+    }
+  }
+}
+
+form:invalid button[type="submit"] {
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+// .border-primary-secondary{
+//   $border: 2px;
+//   position: relative;
+// 	background: #fff;
+
+// 	/*The background extends to the outside edge of the padding. No background is drawn beneath the border.*/
+// 	background-clip: padding-box;
+
+// 	border: solid $border transparent;
+
+// 	&:before {
+// 		content: "";
+// 		position: absolute;
+// 		top: 0;
+// 		right: 0;
+// 		bottom: 0;
+// 		left: 0;
+// 		z-index: -1;
+// 		margin: -$border; /* same as border width */
+// 		border-radius: inherit; /* inherit container box's radius */
+// 		background: linear-gradient(to top, $primary, $secondary);
+// 	}
+// }

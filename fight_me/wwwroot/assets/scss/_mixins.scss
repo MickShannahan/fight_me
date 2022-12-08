@@ -1,0 +1,26 @@
+@mixin screen-size($size) {
+  
+}
+
+@mixin hide($dir, $time:.2s, $delay: 0s){
+  @if $dir ==  'x'{
+    transition: all $time ease $delay;
+    overflow: hidden;
+    max-width: 0px;
+    min-width: 0px;
+    opacity: 0;
+  }
+  @if $dir == 'y'{
+    overflow: hidden;
+    transition: all $time ease $delay;
+    max-height: 0px;
+    min-height: 0px;
+    opacity: 0;
+  }
+  @if $dir == 'show'{
+    transition: all $time ease $delay;
+    max-height: 100%;
+    max-width: 100%;
+    opacity: 1;
+  }
+}
