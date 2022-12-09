@@ -1,5 +1,3 @@
-setup:
-  stack: container
 build:
   docker:
     web: fight_me/Dockerfile
