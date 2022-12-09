@@ -14,4 +14,4 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 # ------------------------------------⬇ replace with your apps name + .dll
-CMD ASPNETCORE_URLS=http://* dotnet fight_me.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet fight_me.dll
